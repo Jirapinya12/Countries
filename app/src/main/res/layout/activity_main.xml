@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/countriesList"
+            android:id="@+id/rvCountriesList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/list_error"
+            android:id="@+id/tvListError"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/error_text"
@@ -45,7 +45,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <ProgressBar
-            android:id="@+id/loading_view"
+            android:id="@+id/pbLoadingView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
