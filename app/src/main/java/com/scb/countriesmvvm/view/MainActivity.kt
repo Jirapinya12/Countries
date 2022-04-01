@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.scb.countriesmvvm.R
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
     @BindView(R.id.pbLoadingView)
     lateinit var pbLoadingView: ProgressBar
 
+    @BindView(R.id.swipeRefreshLayout)
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
     lateinit var viewModel: ListViewModel
     private val countriesAdapter = CountryListAdapter(arrayListOf())
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +42,11 @@ class MainActivity : AppCompatActivity() {
         rvCountriesList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = countriesAdapter
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            viewModel.refresh()
         }
 
         observeViewModel()
