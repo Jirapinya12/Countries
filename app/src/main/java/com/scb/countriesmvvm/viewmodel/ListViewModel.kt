@@ -2,27 +2,49 @@ package com.scb.countriesmvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.scb.countriesmvvm.Country
+import com.scb.countriesmvvm.model.CountriesService
+import com.scb.countriesmvvm.model.Country
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 
-class ListViewModel: ViewModel() {
+class ListViewModel : ViewModel() {
 
+    private val countriesService = CountriesService()
+    private val disposable = CompositeDisposable()
     val countries = MutableLiveData<List<Country>>()
     val countryLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
 
-    fun refresh(){
+    fun refresh() {
         fetchCountries()
     }
 
     private fun fetchCountries() {
-        val mockData = listOf(Country("CountryA"),
-            Country("CountryB"),
-            Country("CountryC"),
-            Country("CountryD"),
-            Country("CountryE"))
+        loading.value = true
+        disposable.add(
+            countriesService.getCountries()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<List<Country>>() {
+                    override fun onSuccess(value: List<Country>?) {
+                        countries.value = value
+                        countryLoadError.value = false
+                        loading.value = false
+                    }
 
-        countryLoadError.value = false
-        loading.value = false
-        countries.value = mockData
+                    override fun onError(e: Throwable?) {
+                        countryLoadError.value = true
+                        loading.value = false
+                    }
+
+                })
+        )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }
