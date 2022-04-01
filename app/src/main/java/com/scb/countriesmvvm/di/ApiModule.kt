@@ -1,6 +1,7 @@
 package com.scb.countriesmvvm.di
 
 import com.scb.countriesmvvm.model.CountriesApi
+import com.scb.countriesmvvm.model.CountriesService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -20,5 +21,10 @@ class ApiModule {
             .build()
             .create(CountriesApi::class.java)
 
+    }
+
+    @Provides
+    fun provideCountriesService(): CountriesService {
+        return CountriesService()
     }
 }
