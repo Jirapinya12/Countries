@@ -3,10 +3,15 @@ package com.scb.countriesmvvm.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.scb.countriesmvvm.model.Country
 import com.scb.countriesmvvm.R
+import com.scb.countriesmvvm.util.getProgressDrawable
+import com.scb.countriesmvvm.util.loadImage
 
 
 class CountryListAdapter(var countries: ArrayList<Country>) :
@@ -29,10 +34,24 @@ class CountryListAdapter(var countries: ArrayList<Country>) :
     }
 
     class CountryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val countryName: TextView = view.findViewById(R.id.tvNameCountry)
+        @BindView(R.id.tvNameCountry)
+        lateinit var countryName: TextView
+
+        @BindView(R.id.ivCountry)
+        lateinit var imageViewCountry: ImageView
+
+        @BindView(R.id.tvCapital)
+        lateinit var capitalName: TextView
+
+        private val progressDrawable = getProgressDrawable(view.context)
+        init {
+            ButterKnife.bind(this, view)
+        }
 
         fun bind(country: Country) {
             countryName.text = country.countryName
+            capitalName.text = country.capital
+            imageViewCountry.loadImage(country.flag, progressDrawable)
         }
     }
 }

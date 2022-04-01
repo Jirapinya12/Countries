@@ -4,7 +4,7 @@
     android:layout_height="@dimen/layout_height">
 
     <ImageView
-        android:id="@+id/imageViewCountry"
+        android:id="@+id/ivCountry"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
